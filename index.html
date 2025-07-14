@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Requisição de Compras - DELÍCIA GOURMET</title>
+  <title>Requisição de Compras - MERCATTO DELÍCIA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
     body { font-family: Arial, sans-serif; background: #f5f5f5; display: flex; justify-content: center; padding: 30px; }
@@ -34,67 +34,45 @@
 </head>
 <body>
 <div class="container">
-  <h2>📋 Requisição de Compras DELÍCIA GOURMET</h2>
+  <h2>📋 Requisição de Compras  MERCATTO DELÍCIA</h2>
 
   <label>Solicitante:</label>
   <select id="solicitante">
     <option value="">Selecione o solicitante</option>
     <option value="ADM">ADM</option>
-    <option value="Ruan">Ruan</option>
-    <option value="Renata">Renata</option>
-    <option value="Lu">Lu</option>
-    <option value="Bruna">Bruna</option>
-    <option value="Renan">Renan</option>
-    <option value="Raimundo">Raimundo</option>
-  <option value="Cleide">Cleide</option>
-      <option value="Ricardo">Ricardo</option>
-    <option value="Larissa">Larissa</option>
+    <option value="Isabela">Isabela</option>
+    <option value="Rosa">Rosa</option>
+    <option value="Maurício">Maurício</option>
+    <option value="Jaildes">Jaildes</option>
+    <option value="Edicleia">Edicleia</option>
+    <option value="Layra">Layra</option>
+    <option value="Jhone">Jhone</option>
+    <option value="Rafael">Rafael</option>
+    <option value="Marizete">Marizete</option>
+    <option value="Jeanei">Jeanei</option>
     <option value="Gabriel">Gabriel</option>
-    <option value="Valcir">Valcir</option>
-    <option value="Tailson">Tailson</option>
-    <option value="Dheure">Dheure</option>
-    <option value="Dorilson">Dorilson</option>
-    <option value="joane">joane</option>
-    <option value="Neval">Neval</option>
-    <option value="Agnaldo">Agnaldo</option>
-    <option value="Genison">Jenison</option>
-    <option value="Vanial">Vania</option>
-    <option value="Adriana">Adriana</option>
-    <option value="Ivaneide">Ivaneide</option>
-    <option value="Quiteria">Quiteria</option>
-    <option value="Luziânia">Luziânia</option>
-    <option value="Rosemeire">Rosemeire</option>
-    <option value="Wilma">Wilma</option>
-    <option value="Islane">Islane</option>
-    <option value="Marcelo">Marcelo</option>
-    <option value="Juciara">Juciara</option>
-    <option value="Aline Santos">Aline Santos</option>
-    <option value="Aline Rodrigues">Aline Rodrigues</option>
-
-    <option value="Geane">Geane</option>
+    <option value="Andrevan">Andrevan</option>
+    <option value="Rickelves">Rickelves</option>
+    <option value="Elenice">Elenice</option>
     <!-- ... -->
   </select>
 
   <label>Setor:</label>
   <select id="setor">
-    <option value="">Selecione o setor</option>
     <option value="Cozinha">Cozinha</option>
-   <option value="Limpeza">Limpeza</option>
-   <option value="Sushi">Sushi</option>
-   <option value="Garçons">Garçons</option>
-   <option value="Gerência">Gerência</option>
-   <option value="Pizzaria">Pizzaria</option>
+   <option value="Parrila">Parrila</option>
+   <option value="Confeitaria">Confeitaria</option>
+    <option value="Cozinha">Cozinha</option>
+    <option value="Limpeza Noite">Limpeza Noite</option>
+    <option value="M. Kids">M. Kids</option>
     <option value="Bar">Bar</option>
-    <option value="Caixa">Caixa</option>
+    <option value="Sushi">Sushi</option>
   </select>
-
   <label>Produto:</label>
   <input type="text" id="item" placeholder="Digite o produto">
   <div id="autocomplete-list" class="autocomplete-list"></div>
-
   <label>Quantidade:</label>
   <input type="number" id="quantidade" min="1">
-
   <label>Unidade de Medida:</label>
   <div class="unidades">
     <button type="button" onclick="selecionarUnidade(this, 'UN.')">UN.</button>
@@ -103,10 +81,8 @@
     <button type="button" onclick="selecionarUnidade(this, 'L')">PC</button>
     <button type="button" onclick="selecionarUnidade(this, 'KG')">KG</button>
   </div>
-
   <label>Observações:</label>
   <textarea id="observacoes" placeholder="Observações gerais"></textarea>
-
   <!-- BOTÃO UNICO ENVIAR -->
   <button class="btn-blue" onclick="enviarItem()">ENVIAR ITEM</button>
   <button class="btn-red" onclick="limparTabela()">LIMPAR HISTÓRICO</button>
@@ -122,37 +98,20 @@
 <script>
   const solicitanteSenhas = {
     "ADM": "00",
-    "Ruan": "Ruan10",
-    "Renata": "Renata12",
-   "Lu": "Lu26",
-   "Bruna": "Bruna48",
-   "Renan": "Renan78",
-   "Raimundo": "Raimundo47",
-   "Cleide": "Cleide98",
-   "Ricardo": "Ricardo41",
-   "Larissa": "Larissa56",
-   "Valcir": "Valcir24",
-   "Tailson": "Tailson97",
-   "Dheure": "Dheure73",
-   "Neval": "Neval34",
-   "Agnaldo": "Agnaldo67",
-   "Genison": "Genison35",
-   "Dorilson": "Dorilson8",
-   "joane": "joane6",
-   "Vanial": "Vanial86",
-   "Adriana": "Adriana49",   
-   "Ivaneide": "Ivaneide46",
-   "Geane": "Geane83",
-   "Luziânia": "Luziânia8",
-   "Rosemeire": "Rosemeire30",
-   "Wilma": "Wilma87",
-   "Gabriel": "Gabriel5",
-   "Islane": "Islane78",
-   "Marcelo": "Marcelo75",
-   "Juciara": "Juciara35",
-   "Aline Santos": "Aline32",
-   "Aline Rodrigues": "Aline59",
-    "Quiteria": "Quiteria43"
+    "Isabela": "Kids25",
+    "Rosa": "Rosa123",
+   "Jaildes": "Jaildes25",
+   "Maurício": "Maurício26",
+   "Jeanei": "Jeanei27",
+   "Jhone29": "Jhone29",
+   "Rafael25": "Rafael25",
+   "Edicleia": "Edicleia25",
+   "Marizete": "Marizete25",
+   "Layra": "0509",
+   "Gabriel": "Gabriel74",
+   "Andrevan": "Andrevan35",
+   "Rickelves": "Rickelves98",
+    "Elenice": "Kids26"
     // ... outros
   };
 
@@ -221,7 +180,7 @@
     const horaEnvio = new Date().toLocaleTimeString();
 
     const data = new URLSearchParams();
-    data.append('tipoFormulario', 'Requisição');
+    data.append('tipoFormulario', 'Requisição MERCATTO');
     data.append('Item', item);
     data.append('Unidade', unidadeSelecionada);
     data.append('Quantidade', quantidade);
@@ -229,7 +188,7 @@
     data.append('Solicitante', solicitante);
     data.append('Observacoes', observacoes);
 
-    fetch('https://script.google.com/macros/s/AKfycby8K9Z8pmysdQZWnFIbBEjpDL3QvzNLRCy1jp33MKY7c5a_yvtIhtCudL-CrCpwRfhxwA/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbxVc95pHMUY7IqJLTJgOd__4gybg5ttTS5ps4WKpqlxjD1jL7HNHwr-QGwEH8oiijHE/exec', {
       method: 'POST',
       body: data
     })
