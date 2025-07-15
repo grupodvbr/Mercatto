@@ -30,11 +30,27 @@
     .btn-blue { background: #2196F3; color: #fff; }
     .btn-red { background: #f44336; color: #fff; }
     #msg { text-align: center; margin-top: 10px; font-weight: bold; }
+    #spinner {
+      display: none;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #2196F3;
+      border-radius: 50%;
+      width: 60px; height: 60px;
+      animation: spin 1s linear infinite;
+      z-index: 100;
+    }
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
   </style>
 </head>
 <body>
 <div class="container">
-  <h2>📋 Requisição de Compras  MERCATTO DELÍCIA</h2>
+  <h2>📋 Requisição de Compras MERCATTO DELÍCIA</h2>
 
   <label>Solicitante:</label>
   <select id="solicitante">
@@ -54,37 +70,43 @@
     <option value="Andrevan">Andrevan</option>
     <option value="Rickelves">Rickelves</option>
     <option value="Elenice">Elenice</option>
-    <!-- ... -->
   </select>
 
   <label>Setor:</label>
   <select id="setor">
     <option value="Cozinha">Cozinha</option>
-   <option value="Parrila">Parrila</option>
-   <option value="Confeitaria">Confeitaria</option>
-    <option value="Cozinha">Cozinha</option>
+    <option value="Parrila">Parrila</option>
+    <option value="Confeitaria">Confeitaria</option>
     <option value="Limpeza Noite">Limpeza Noite</option>
     <option value="M. Kids">M. Kids</option>
     <option value="Bar">Bar</option>
     <option value="Sushi">Sushi</option>
   </select>
+
   <label>Produto:</label>
   <input type="text" id="item" placeholder="Digite o produto">
   <div id="autocomplete-list" class="autocomplete-list"></div>
+
   <label>Quantidade:</label>
   <input type="number" id="quantidade" min="1">
+
   <label>Unidade de Medida:</label>
   <div class="unidades">
     <button type="button" onclick="selecionarUnidade(this, 'UN.')">UN.</button>
     <button type="button" onclick="selecionarUnidade(this, 'CX')">CX</button>
     <button type="button" onclick="selecionarUnidade(this, 'L')">L</button>
-    <button type="button" onclick="selecionarUnidade(this, 'L')">PC</button>
+    <button type="button" onclick="selecionarUnidade(this, 'PC')">PC</button>
     <button type="button" onclick="selecionarUnidade(this, 'KG')">KG</button>
   </div>
+
   <label>Observações:</label>
   <textarea id="observacoes" placeholder="Observações gerais"></textarea>
-  <!-- BOTÃO UNICO ENVIAR -->
-  <button class="btn-blue" onclick="enviarItem()">ENVIAR ITEM</button>
+
+  <!-- Spinner -->
+  <div id="spinner"></div>
+
+  <!-- BOTÕES -->
+  <button id="btn-enviar" class="btn-blue" onclick="enviarItem()">ENVIAR ITEM</button>
   <button class="btn-red" onclick="limparTabela()">LIMPAR HISTÓRICO</button>
 
   <p id="msg"></p>
@@ -97,22 +119,11 @@
 
 <script>
   const solicitanteSenhas = {
-    "ADM": "00",
-    "Isabela": "Kids25",
-    "Rosa": "Rosa123",
-   "Jaildes": "Jaildes25",
-   "Maurício": "Maurício26",
-   "Jeanei": "Jeanei27",
-   "Jhone29": "Jhone29",
-   "Rafael25": "Rafael25",
-   "Edicleia": "Edicleia25",
-   "Marizete": "Marizete25",
-   "Layra": "0509",
-   "Gabriel": "Gabriel74",
-   "Andrevan": "Andrevan35",
-   "Rickelves": "Rickelves98",
-    "Elenice": "Kids26"
-    // ... outros
+    "ADM": "00", "Isabela": "Kids25", "Rosa": "Rosa123", "Jaildes": "Jaildes25",
+    "Maurício": "Maurício26", "Jeanei": "Jeanei27", "Jhone": "Jhone29",
+    "Rafael": "Rafael25", "Edicleia": "Edicleia25", "Marizete": "Marizete25",
+    "Layra": "0509", "Gabriel": "Gabriel74", "Andrevan": "Andrevan35",
+    "Rickelves": "Rickelves98", "Elenice": "Kids26"
   };
 
   let produtos = [];
@@ -124,7 +135,6 @@
   const autocompleteList = document.getElementById('autocomplete-list');
   const solicitanteInput = document.getElementById('solicitante');
 
-  // Autocomplete de produtos
   fetch("https://script.google.com/macros/s/YOUR_AUTOCOMPLETE_API/exec")
     .then(r => r.json()).then(data => produtos = data);
 
@@ -149,7 +159,6 @@
     btn.classList.add('ativo');
   }
 
-  // Solicita senha assim que escolher solicitante
   solicitanteInput.addEventListener('change', () => {
     const solicitante = solicitanteInput.value.trim();
     if (solicitante) {
@@ -177,8 +186,10 @@
       return;
     }
 
-    const horaEnvio = new Date().toLocaleTimeString();
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('btn-enviar').disabled = true;
 
+    const horaEnvio = new Date().toLocaleTimeString();
     const data = new URLSearchParams();
     data.append('tipoFormulario', 'Requisição MERCATTO');
     data.append('Item', item);
@@ -201,10 +212,14 @@
       document.getElementById('quantidade').value = '';
       unidadeSelecionada = '';
       document.querySelectorAll('.unidades button').forEach(b => b.classList.remove('ativo'));
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('btn-enviar').disabled = false;
     })
     .catch(err => {
       console.error(err);
       document.getElementById('msg').innerText = "Enviado, favor confirmar com o setor o recebimento do pedido";
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('btn-enviar').disabled = false;
     });
   }
 
